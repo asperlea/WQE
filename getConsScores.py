@@ -1,5 +1,6 @@
 __author__ = 'adriana'
 
+import sys
 from Wiggle import Wiggle
 
 '''
@@ -17,11 +18,18 @@ AAGCTCTTCCAGAAGGTATGTGGAGAAGCACTGCTTTTCCTCTAGCTGGCCAAGGTCTAC
 '''
 
 def main():
-    if len(sys.argv[1] < 2):
+    if len(sys.argv) < 2:
         print("Usage: getConsScores.py <file1>")
-        exit(1)
+        #exit(1)
 
     MamConserv = Wiggle(name='MamConserv',
                         wiggle_dir='/u/home/a/asperlea/project-ernst/phyloP45way',
                         file_prefix='chr',
                         file_suffix='.phyloP46way.placental.wigFix.gz')
+
+    print "Trying for chr10 region 100042558-100048772:\n"
+    regions = MamConserv.get_region('10', 100042558, 100048772)
+    print regions[0]
+    print regions[-1]
+
+main()

@@ -6,6 +6,7 @@ import gzip
 import glob
 import itertools
 import pdb
+import util
 
 from numpy import array, where, ones
 
@@ -96,8 +97,6 @@ class Wiggle:
         self.chridx = {}
         for chr, fidxh in self.fidxhandles.items():
             self.chridx[chr] = [map(int, fl.split()) for fl in fidxh.readlines()]
-
-        wiggle_tracks[name] = self
 
     def get_region(self, chr, start, end):
         ''' we look through the chromosome index list and we pull out the

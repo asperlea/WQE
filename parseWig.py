@@ -10,18 +10,25 @@ def main():
     wigFile = sys.argv[1]
     f = gzip.open(wigFile, 'rb')
     
+    # Create chromData dictionary which will contain the intervals for which we have data
     chromData = defaultdict(list)
     curInt = (0, 0)
+    prevChrom = ""
     curChrom = ""
+    chromList = []
+    
     for line in f:
         if len(line) > 7:
-            print line
             if curChrom != "":
                 chromData[curChrom].append(curInt)
             splitLine = line.split(" ")
             start = int(splitLine[2].split("=")[1])
             curInt = (start, start)
+            prevChrom = curChrom
             curChrom = splitLine[1].split("=")[1]
+
+            if curChrom != prevChrom:
+                ofile = open("consChrom " + str(prevChrom) + ".wigFix
         else:
             curInt = (curInt[0], curInt[1] + 1) 
     f.close()
