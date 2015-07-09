@@ -25,18 +25,31 @@ def main():
     consScores = open(sys.argv[2], "w")
 
     MamConserv = Wiggle(name='MamConserv',
-                        wiggle_dir='/u/home/a/asperlea/project-ernst/phyloP45way',
+                        wiggle_dir='/u/scratch/a/asperlea/phyloP45way',
                         file_prefix='chr',
                         file_suffix='.phyloP46way.placental.wigFix.gz')
 
+    num = 0
     for line in exonsFile:
-        if line[0] == '>':
+        num += 1
+        if line[0] == '>':  
             parsedLine = line.split("|")
             chrom = parsedLine[1][3:]
             chromStart = int(parsedLine[2])
             chromEnd = int(parsedLine[3])
-            region = MamConserv.get_region(chrom, chromStart, chromEnd)
 
-            print region[0], region[1]
+            avgScore = 0
+            try:
+                region = MamConserv.get_region(chrom, chromStart, chromEnd)
+                for nucleotide in region:
+                    avgScore += nucleotide[4]
+                avgScore /= len(region)
+            except ValueError:
+                avgScore = -1
+            consScores.write(line.strip() + "|" + str(avgScore) + "\n")
+        if num % 500 == 0:
+            print "Done with", num, "lines."
+
+    consScores.close()
 
 main()
